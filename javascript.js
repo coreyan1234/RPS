@@ -70,14 +70,13 @@ function playRound(playerSelection, computerSelection) {
 
 
 /**
- * Plays multiple rounds of RPS and keeps track of score. Reports a winner and loser at the end
- * @param {Number} numGames The desired number of games to play
+ * Plays 5 rounds of RPS and keeps track of score. Reports a winner and loser at the end
  * @returns a String declaring who won more games
  */
-function game(numGames) {
+function game() {
     let computerScore = 0;
     let playerScore = 0;
-    for (let i = 0; i < numGames; i++) {
+    for (let i = 0; i < 5; i++) {
         let playerSelection = prompt("Type your selection (Rock, Paper, Scissors)");
         let result = playRound(playerSelection, computerPlay());
         if (result === "win") {
@@ -86,7 +85,6 @@ function game(numGames) {
         else if (result === "lose") {
             computerScore++;
         }
-        //playRound(playerSelection, computerPlay());
     }
 
     if (playerScore > computerScore) {
@@ -100,4 +98,4 @@ function game(numGames) {
     }
 }
 // *** TESTING ***
-console.log(game(5));
+console.log(game());

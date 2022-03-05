@@ -6,19 +6,18 @@
  *  - "Scissors"
  */
 function computerPlay() {
-    // Possible plays:
     const plays = ["Rock", "Paper", "Scissors"]
-
     return plays[Math.floor(Math.random() * plays.length)];
 }
 // *** TESTING ***
-console.log("Random computer play: " + computerPlay());
+//console.log("Random computer play: " + computerPlay());
 
 
 /**
  * Plays a single round of Rock Paper Scissors.
  * @param {String} playerSelection The player's play (Case-Insensitive)
  * @param {String} computerSelection The computer's play
+ * @returns a String of either "draw", "win", or "lose"
  */
 function playRound(playerSelection, computerSelection) {
     // Format playerSelection to just a leading capital letter
@@ -27,63 +26,78 @@ function playRound(playerSelection, computerSelection) {
 
     /*
     Combinations:
-    1. Same play
+    1. Draw
     2. Rock > Scissors
     3. Paper > Rock
     4. Scissors > Paper
     */
-
-    // Draw
     if (playerSelecFormatted === computerSelection) {
-        return roundResult("draw", playerSelecFormatted, computerSelection);
+        roundResult("draw", playerSelecFormatted, computerSelection);
+        return "draw";
     }
-    // Rock
-    else if (playerSelecFormatted === "Rock") {
-        if (computerSelection === "Scissors") {
-            return roundResult("win", playerSelecFormatted, computerSelection);
-        }
-        else if (computerSelection === "Paper") {
-            return roundResult("lose", playerSelecFormatted, computerSelection);
-        }
+    else if ( (playerSelecFormatted === "Rock" && computerSelection === "Scissors") || 
+    (playerSelecFormatted === "Paper" && computerSelection === "Rock") ||
+    (playerSelecFormatted === "Scissors" && (computerSelection === "Paper")) ) {
+        roundResult("win", playerSelecFormatted, computerSelection);
+        return "win"; 
     }
-    // Paper
-    else if (playerSelecFormatted === "Paper") {
-        if (computerSelection === "Rock") {
-            return roundResult("win", playerSelecFormatted, computerSelection);
-        }
-        else if (computerSelection === "Scissors") {
-            return roundResult("lose", playerSelecFormatted, computerSelection);
-        }
-    }
-    // Scissors
-    else if (playerSelecFormatted === "Scissors") {
-        if (computerSelection === "Paper") {
-            return roundResult("win", playerSelecFormatted, computerSelection);
-        }
-        else if (computerSelection === "Rock") {
-            return roundResult("lose", playerSelecFormatted, computerSelection);
-        }
+    else {
+        roundResult("lose", playerSelecFormatted, computerSelection);
+        return "lose";
     }
 }
 // ***TESTING***
-console.log(playRound(computerPlay(), computerPlay()))
+//console.log(playRound(computerPlay(), computerPlay()));
 
 
 /**
- * Prints the result of the round
+ * Prints the result of the round to the console
  * @param {String} result The result of the round
  * @param {String} playerSelecFormatted The player's play
  * @param {String} computerSelection The computer's play
- * @returns a String of the round's result (draw, win, lose)
  */
  function roundResult(result, playerSelecFormatted, computerSelection) {
     if (result === "draw") {
-        return `Draw! Player and computer both selected ${playerSelecFormatted}`;
+        console.log(`Draw! Player and computer both selected ${playerSelecFormatted}`);
     }
     else if (result === "win") {
-        return `You Win! ${playerSelecFormatted} beats ${computerSelection}`;
+        console.log(`You Win! ${playerSelecFormatted} beats ${computerSelection}`);
     }
     else if (result === "lose") {
-        return `You Lose! ${computerSelection} beats ${playerSelecFormatted}`;
+        console.log(`You Lose! ${computerSelection} beats ${playerSelecFormatted}`);
     }
 }
+
+
+/**
+ * Plays multiple rounds of RPS and keeps track of score. Reports a winner and loser at the end
+ * @param {Number} numGames The desired number of games to play
+ * @returns a String declaring who won more games
+ */
+function game(numGames) {
+    let computerScore = 0;
+    let playerScore = 0;
+    for (let i = 0; i < numGames; i++) {
+        let playerSelection = prompt("Type your selection (Rock, Paper, Scissors)");
+        let result = playRound(playerSelection, computerPlay());
+        if (result === "win") {
+            playerScore++;
+        }
+        else if (result === "lose") {
+            computerScore++;
+        }
+        //playRound(playerSelection, computerPlay());
+    }
+
+    if (playerScore > computerScore) {
+        return "Player wins!";
+    }
+    else if (playerScore === computerScore) {
+        return "Draw!";
+    }
+    else {
+        return "Computer Wins!"
+    }
+}
+// *** TESTING ***
+console.log(game(5));
